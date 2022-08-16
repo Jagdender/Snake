@@ -5,54 +5,54 @@
 #include <conio.h>
 //
 //
-//ºê¶¨Òå
-#define COL 40   //ÁĞÊı(x)
-#define ROW 24   //ĞĞÊı(y)
-#define NONE 0   //¿Õ
-#define WALL 1   //Ç½
-#define FOOD 2   //Ê³Îï
-#define HEAD 3   //ÉßÍ·
-#define BODY 4   //ÉßÉí
-#define UP 72    //ÉÏ
-#define DOWN 80  //ÏÂ
-#define LEFT 75  //×ó
-#define RIGHT 77 //ÓÒ
-#define SPACE 32 //ÔİÍ£
-#define ESC 27   //ÍË³ö
+//å®å®šä¹‰
+#define COL 40   //åˆ—æ•°(x)
+#define ROW 24   //è¡Œæ•°(y)
+#define NONE 0   //ç©º
+#define WALL 1   //å¢™
+#define FOOD 2   //é£Ÿç‰©
+#define HEAD 3   //è›‡å¤´
+#define BODY 4   //è›‡èº«
+#define UP 72    //ä¸Š
+#define DOWN 80  //ä¸‹
+#define LEFT 75  //å·¦
+#define RIGHT 77 //å³
+#define SPACE 32 //æš‚åœ
+#define ESC 27   //é€€å‡º
 //
-//È«¾Ö±äÁ¿
-int tick = 500;        //ÓÎÏ·¿Ì£¨Êı×ÖÔ½´óÔ½Âı£©
-int level = 9;         //ÓÎÏ·ÄÑ¶È
-int length = 3;        //ÉßÉíÌå³¤¶È£¨²»°üº¬Í·£©
-int Direction = RIGHT; //Éß·½Ïò(Ä¬ÈÏÏòÓÒ)
-int num = 0;
-int coordinate[COL][ROW]; //×ø±ê×´Ì¬
-struct Snake              //Éß£¨Ä¬ÈÏbody[0]ÎªÉßÍ·£©
+//å…¨å±€å˜é‡
+int tick = 500;           //æ¸¸æˆåˆ»ï¼ˆæ•°å­—è¶Šå¤§è¶Šæ…¢ï¼‰
+int level = 9;            //æ¸¸æˆéš¾åº¦
+int length = 3;           //è›‡èº«ä½“é•¿åº¦ï¼ˆä¸åŒ…å«å¤´ï¼‰
+int Direction = RIGHT;    //è›‡æ–¹å‘(é»˜è®¤å‘å³)
+int num = 0;              //é£Ÿç‰©ä¸ªæ•°
+int coordinate[COL][ROW]; //åæ ‡çŠ¶æ€
+int r1 = 0, r2 = 0;       //ä¸­é—´é‡ï¼Œåœ¨Run()ä¸Judge()å‚¨å­˜åæ ‡
+
+struct Snake //è›‡ï¼ˆé»˜è®¤body[0]ä¸ºè›‡å¤´ï¼‰
 {
     int x;
     int y;
-} body[COL * ROW]; //Êı×é´´½¨Ê±¸÷ÔªËØÄ¬ÈÏÎª0
+} body[COL * ROW]; //æ•°ç»„åˆ›å»ºæ—¶å„å…ƒç´ é»˜è®¤ä¸º0
 
-void HideCursor();             //Òş²Ø¹â±ê
-void CursorJump(int x, int y); //¹â±êÌø×ª
-void difficulty();             //ÄÑ¶ÈÑ¡Ôñ
-void welcome();                //»¶Ó­½çÃæ
-void information();            //ÓÎÏ·ËµÃ÷£¨Î´Íê³É0%
+void HideCursor();             //éšè—å…‰æ ‡
+void CursorJump(int x, int y); //å…‰æ ‡è·³è½¬
+void difficulty();             //éš¾åº¦é€‰æ‹©
+void welcome();                //æ¬¢è¿ç•Œé¢
+void information();            //æ¸¸æˆè¯´æ˜    å®Œæˆ50%
 void screen(int a);            // UI
-void word(const char a[]);     //×ÖÌåµ¯Ä»
-void color(int c);             //ÑÕÉ«
-void Init();                   //³õÊ¼»¯
-void Run();                    //ÒÆ¶¯ÉßÍ·
-void MoveSnake();              //ÒÆ¶¯ÉßÉí
-void Put(int x);               //Ê³ÎïÓëÕÏ°­Îï
-void Game();                   //Íæ¼Ò¶¯×÷´úÂë
-void Judge();                  //ÅĞ¶Ï£¨Î´Íê³É50%
-void End();
+void word(const char a[]);     //å­—ä½“å¼¹å¹•
+void color(int c);             //é¢œè‰²
+void Init();                   //åˆå§‹åŒ–
+void Run();                    //ç§»åŠ¨è›‡(æ ¸å¿ƒ)
+void Put(int x);               //é£Ÿç‰©ä¸éšœç¢ç‰©    å®Œæˆ50%
+void Game();                   //ç©å®¶åŠ¨ä½œä»£ç 
+void Judge();                  //åˆ¤æ–­
+void End();                    //ç»“æŸæ¸¸æˆ
 int main()
 {
-    //³õÊ¼»¯
-    srand(time(0));        //Ëæ»úÊı
-    system("title Snake"); // cmdÃû³Æ
+    srand(time(0));        //éšæœºæ•°
+    system("title Snake"); // cmdåç§°
     HideCursor();
     welcome();
     Init();
@@ -66,41 +66,41 @@ int main()
 
 void screen(int a)
 {
-    if (a == 1) //³õÊ¼½çÃæ32¡Á16
+    if (a == 1) //åˆå§‹ç•Œé¢32Ã—16
     {
         system("cls");
-        color(249);                          //ÖĞÀ¶
-        system("mode con cols=64 lines=16"); // cmd³ß´ç
-        printf("¡ö¡ö¡ö¡ö¡ö¡ö¡ö¡ö¡ö¡ö¡ö¡ö¡ö¡ö¡ö¡ö¡ö¡ö¡ö¡ö¡ö¡ö¡ö¡ö¡ö¡ö¡ö¡ö¡ö¡ö¡ö¡ö\n");
+        color(249);                          //ä¸­è“
+        system("mode con cols=64 lines=16"); // cmdå°ºå¯¸
+        printf("â– â– â– â– â– â– â– â– â– â– â– â– â– â– â– â– â– â– â– â– â– â– â– â– â– â– â– â– â– â– â– â– \n");
         for (int r = 14; r != 0; r--)
         {
-            printf("¡ö");
+            printf("â– ");
             for (int c = 60; c != 0; c--)
             {
                 printf(" ");
             }
-            printf("¡ö\n");
+            printf("â– \n");
         }
-        printf("¡ö¡ö¡ö¡ö¡ö¡ö¡ö¡ö¡ö¡ö¡ö¡ö¡ö¡ö¡ö¡ö¡ö¡ö¡ö¡ö¡ö¡ö¡ö¡ö¡ö¡ö¡ö¡ö¡ö¡ö¡ö¡ö");
+        printf("â– â– â– â– â– â– â– â– â– â– â– â– â– â– â– â– â– â– â– â– â– â– â– â– â– â– â– â– â– â– â– â– ");
     }
-    else if (a == 2) //³õÊ¼ÓÎÏ·½çÃæ40¡Á24
+    else if (a == 2) //åˆå§‹æ¸¸æˆç•Œé¢40Ã—24
     {
-        system("csl");
-        system("mode con cols=80 lines=24"); // cmd³ß´ç
-        color(248);                          //×Ø»Ò
-        printf("¡ö¡ö¡ö¡ö¡ö¡ö¡ö¡ö¡ö¡ö¡ö¡ö¡ö¡ö¡ö¡ö¡ö¡ö¡ö¡ö¡ö¡ö¡ö¡ö¡ö¡ö¡ö¡ö¡ö¡ö¡ö¡ö¡ö¡ö¡ö¡ö¡ö¡ö¡ö¡ö\n");
+        system("cls");
+        system("mode con cols=80 lines=24"); // cmdå°ºå¯¸
+        color(248);                          //æ£•ç°
+        printf("â– â– â– â– â– â– â– â– â– â– â– â– â– â– â– â– â– â– â– â– â– â– â– â– â– â– â– â– â– â– â– â– â– â– â– â– â– â– â– â– \n");
         for (int r = 22; r != 0; r--)
         {
-            printf("¡ö");
+            printf("â– ");
             for (int c = 76; c != 0; c--)
             {
                 printf(" ");
             }
-            printf("¡ö\n");
+            printf("â– \n");
         }
-        printf("¡ö¡ö¡ö¡ö¡ö¡ö¡ö¡ö¡ö¡ö¡ö¡ö¡ö¡ö¡ö¡ö¡ö¡ö¡ö¡ö¡ö¡ö¡ö¡ö¡ö¡ö¡ö¡ö¡ö¡ö¡ö¡ö¡ö¡ö¡ö¡ö¡ö¡ö¡ö¡ö");
+        printf("â– â– â– â– â– â– â– â– â– â– â– â– â– â– â– â– â– â– â– â– â– â– â– â– â– â– â– â– â– â– â– â– â– â– â– â– â– â– â– â– ");
     }
-    else if (a == 3) //ÓÎÏ·½çÃæ40¡Á24(×ø±ê·¨)
+    else if (a == 3) //æ¸¸æˆç•Œé¢40Ã—24(åæ ‡æ³•)
     {
         for (int a = 0; a < COL; a++)
         {
@@ -111,22 +111,22 @@ void screen(int a)
                 {
                 case WALL:
                     color(248);
-                    printf("¡ö");
+                    printf("â– ");
                     break;
                 case NONE:
                     printf("  ");
                     break;
                 case FOOD:
                     color(244);
-                    printf("¡ñ");
+                    printf("â—");
                     break;
                 case HEAD:
                     color(242);
-                    printf("¡ö");
+                    printf("â– ");
                     break;
                 case BODY:
                     color(242);
-                    printf("¡õ");
+                    printf("â–¡");
                     break;
                 default:
                     break;
@@ -142,12 +142,13 @@ void welcome()
     screen(1);
     color(242);
     CursorJump(27, 6);
-    word("Ì°³ÔÉßÓÎÏ·");
+    printf("è´ªåƒè›‡æ¸¸æˆ");
     CursorJump(26, 8);
-    word("°´ÈÎÒâ¼ü¿ªÊ¼");
+    color(243);
+    word("æŒ‰ä»»æ„é”®å¼€å§‹");
     CursorJump(28, 10);
     color(247);
-    word("°´ESCÍË³ö");
+    word("æŒ‰ESCé€€å‡º");
     n = getch();
     if (n != ESC)
         difficulty();
@@ -157,63 +158,73 @@ void welcome()
 
 void difficulty()
 {
-    int n = 0;
+    int n = 0, m = 0;
     system("cls");
     screen(1);
     CursorJump(27, 3);
-    printf("Ì°³ÔÉßÓÎÏ·");
+    printf("è´ªåƒè›‡æ¸¸æˆ");
     CursorJump(28, 5);
     color(246);
-    word("Ñ¡ÔñÄÑ¶È");
+    word("é€‰æ‹©éš¾åº¦");
     CursorJump(16, 6);
     color(248);
-    word("1.    EASY         ËÙ¶È½ÏÂı");
+    word("1.    BORING       é€Ÿåº¦è¾ƒæ…¢");
     CursorJump(16, 7);
     color(242);
-    word("2.    NORMAL       ËÙ¶ÈÖĞµÈ");
+    word("2.    NORMAL       é€Ÿåº¦ä¸­ç­‰");
     CursorJump(16, 8);
     color(241);
-    word("3.    DIFFICULT    ËÙ¶È½Ï¿ì");
+    word("3.    DIFFICULT    é€Ÿåº¦è¾ƒå¿«");
     CursorJump(16, 9);
     color(244);
-    word("4.    HELL        ¼«¾ßÌôÕ½ĞÔ");
-    CursorJump(28, 11);
+    word("4.    HELL         é«˜æŒ‘æˆ˜æ€§");
+    CursorJump(16, 10);
+    color(246);
+    word("5.    ZEN          ç”±æ˜“åˆ°éš¾");
+    CursorJump(28, 12);
     color(247);
-    word("°´ESCÍË³ö");
+    word("æŒ‰ESCé€€å‡º");
     for (;;)
     {
+        m = 0;
         n = getch();
-        switch (n) //Êı×Ö1 2 3 4·Ö±ğ¶ÔÓ¦49 50 51 52
+        switch (n) //æ•°å­—1 2 3 4åˆ†åˆ«å¯¹åº”49 50 51 52
         {
         case ESC:
+            exit(0);
             break;
         case 49:
             level = 1;
-            tick = 250;
+            tick = 150;
             break;
         case 50:
             level = 2;
-            tick = 75;
+            tick = 60;
             break;
         case 51:
             level = 3;
-            tick = 20;
+            tick = 15;
             break;
         case 52:
             level = 4;
-            tick = 5;
+            tick = 3;
+            break;
+        case 53:
+            level = 5;
+            tick = 120;
             break;
         default:
+            m = 1;
             break;
         }
-        if (level == 0 || level == 1 || level == 2 || level == 3 || level == 4)
+        if (m == 0)
             break;
     }
 }
 
 void Init()
 {
-    //³õÊ¼»¯±ß¿ò
+    //åˆå§‹åŒ–è¾¹æ¡†
     for (int a = 0; a != COL; a++)
     {
         for (int b = 0; b != ROW; b++)
@@ -226,8 +237,11 @@ void Init()
                 coordinate[a][b] = NONE;
         }
     }
-    //³õÊ¼»¯Éß
-    body[0].x = 10; //µ¥Î»£¨·½¸ñ£©
+    //åˆå§‹åŒ–è›‡
+    length = 3;
+    num = 0;
+    Direction = RIGHT;
+    body[0].x = 10; //å•ä½ï¼ˆæ–¹æ ¼ï¼‰
     body[0].y = ROW / 2;
     coordinate[body[0].x][body[0].y] = HEAD;
     for (int a = 1; a <= length; a++)
@@ -241,8 +255,16 @@ void Init()
 
 void Run()
 {
-    MoveSnake();       //ÉßÉíÒÆ¶¯ÖÁĞÂÎ»ÖÃ(¸²¸Ç)
-    switch (Direction) //ÉßÍ·¿ªÊ¼ÒÆ¶¯
+    r1 = body[length].x; //å‚¨å­˜åŸè›‡å°¾åæ ‡
+    r2 = body[length].y;
+    coordinate[body[length].x][body[length].y] = NONE; //å°†åŸè›‡å°¾åæ ‡è®¾ä¸ºç©ºç™½
+    for (int a = length; a != 0; a--)                  //ä½ç§»èº«ä½“(â€œä»è›‡å°¾å¼€å§‹åŠ¨â€)
+    {
+        body[a].x = body[a - 1].x;
+        body[a].y = body[a - 1].y;
+        coordinate[body[a].x][body[a].y] = BODY;
+    }
+    switch (Direction) //è›‡å¤´å¼€å§‹ç§»åŠ¨
     {
     case UP:
         body[0].y--;
@@ -257,20 +279,10 @@ void Run()
         body[0].x++;
         break;
     }
-    Judge();
+    Judge();                                 //åˆ¤æ–­æ–°è›‡å¤´åæ ‡å†…å®¹
+    coordinate[body[0].x][body[0].y] = HEAD; //å°†æ–°è›‡å¤´åæ ‡è®¾ä¸ºè›‡å¤´
     screen(3);
     Sleep(tick);
-}
-
-void MoveSnake()
-{
-    coordinate[body[length].x][body[length].y] = NONE; //½«Ô­Î²²¿ÉèÎª¿Õ°×
-    for (int a = length; a != 0; a--)                  //Î»ÒÆÉíÌå(¡°´ÓÉßÎ²¿ªÊ¼¶¯¡±)
-    {
-        body[a].x = body[a - 1].x;
-        body[a].y = body[a - 1].y;
-        coordinate[body[a].x][body[a].y] = BODY;
-    }
 }
 
 void Put(int x)
@@ -278,18 +290,18 @@ void Put(int x)
     int n = 0;
     for (;;)
     {
-        n = rand() % (COL * ROW); //Éú³ÉËæ»úÊı
+        n = rand() % (COL * ROW); //ç”Ÿæˆéšæœºæ•°
         if (coordinate[0][n] == 0)
             break;
     }
-    if (x == FOOD) //Éú³ÉÊ³Îï
+    if (x == FOOD) //ç”Ÿæˆé£Ÿç‰©
         coordinate[0][n] = FOOD;
 }
 
 void Game()
 {
-    int m = 0;         // mÎªÖĞ¼äÁ¿
-    int n = Direction; // nÎª×´Ì¬Á¿
+    int m = 0;         // mä¸ºä¸­é—´é‡
+    int n = Direction; // nä¸ºçŠ¶æ€é‡
     for (;;)
     {
         for (;;)
@@ -298,7 +310,7 @@ void Game()
             if (kbhit())
                 break;
         }
-        for (; kbhit() != 0;) //Çå¿Õ»º³åÇøÈ¡×îºóÒ»Î»¼üÖµ
+        for (; kbhit() != 0;) //æ¸…ç©ºç¼“å†²åŒºå–æœ€åä¸€ä½é”®å€¼
             m = getch();
         switch (m)
         {
@@ -338,19 +350,22 @@ void Game()
 
 void Judge()
 {
-    switch (coordinate[body[0].x][body[0].y]) //ÅĞ¶ÏÒÆ¶¯×ø±êÀàĞÍ
+    switch (coordinate[body[0].x][body[0].y]) //åˆ¤æ–­ç§»åŠ¨åæ ‡ç±»å‹
     {
     case NONE:
-        coordinate[body[0].x][body[0].y] = HEAD; //ÉèÖÃĞÂÉßÍ·
         break;
     case WALL:
         End();
         break;
     case FOOD:
-        coordinate[body[0].x][body[0].y] = HEAD;
         length++;
+        body[length].x = r1; //å®šä½
+        body[length].y = r2;
+        coordinate[body[length].x][body[length].y] = BODY;
         num++;
         Put(FOOD);
+        if (level == 5)
+            tick -= 5;
         break;
     case BODY:
         End();
@@ -360,44 +375,77 @@ void Judge()
 
 void End()
 {
+    int n = 0, m = 0;
     CursorJump(body[0].x * 2, body[0].y);
     color(252);
-    printf("¡ö");
-    Sleep(1000);
-    exit(0);
+    printf("â– ");
+    Sleep(1500);
+    screen(1);
+    system("COLOR 08");
+    CursorJump(27, 6);
+    color(7);
+    word("GAME OVER");
+    Sleep(500);
+    CursorJump(23, 8);
+    color(3);
+    word("ç©ºæ ¼é”®     å†æ¥ä¸€å±€");
+    CursorJump(24, 9);
+    color(8);
+    word("ESCé”®     é€€å‡ºæ¸¸æˆ");
+    for (;;)
+    {
+        m = 0;
+        n = getch();
+        switch (n)
+        {
+        case SPACE:
+            Init();
+            difficulty();
+            screen(2);
+            Sleep(1000);
+            screen(3);
+            Sleep(1000);
+            Game();
+            break;
+        case ESC:
+            exit(0);
+            break;
+        default:
+            m = 1;
+            break;
+        }
+        if (m == 0)
+            break;
+    }
 }
 
-void word(const char a[]) //×¢Òâconst³£Á¿µÄÓÃ·¨
+void word(const char a[]) //æ³¨æ„constå¸¸é‡çš„ç”¨æ³•
 {
     for (int i = 0; a[i] != 0; i++)
     {
         printf("%c", a[i]);
-        Sleep(10);
+        Sleep(5);
     }
     printf("\n");
 }
 
-//ÒÔÏÂ´úÂëÀ´×ÔCSDN
+//ä»¥ä¸‹ä»£ç æ¥è‡ªCSDN
 void HideCursor()
 {
-    CONSOLE_CURSOR_INFO curInfo;                     //¶¨Òå¹â±êĞÅÏ¢µÄ½á¹¹Ìå±äÁ¿
-    curInfo.dwSize = 1;                              //Èç¹ûÃ»¸³ÖµµÄ»°£¬¹â±êÒş²ØÎŞĞ§
-    curInfo.bVisible = FALSE;                        //½«¹â±êÉèÖÃÎª²»¿É¼û
-    HANDLE handle = GetStdHandle(STD_OUTPUT_HANDLE); //»ñÈ¡¿ØÖÆÌ¨¾ä±ú
-    SetConsoleCursorInfo(handle, &curInfo);          //ÉèÖÃ¹â±êĞÅÏ¢
+    CONSOLE_CURSOR_INFO curInfo;                     //å®šä¹‰å…‰æ ‡ä¿¡æ¯çš„ç»“æ„ä½“å˜é‡
+    curInfo.dwSize = 1;                              //å¦‚æœæ²¡èµ‹å€¼çš„è¯ï¼Œå…‰æ ‡éšè—æ— æ•ˆ
+    curInfo.bVisible = FALSE;                        //å°†å…‰æ ‡è®¾ç½®ä¸ºä¸å¯è§
+    HANDLE handle = GetStdHandle(STD_OUTPUT_HANDLE); //è·å–æ§åˆ¶å°å¥æŸ„
+    SetConsoleCursorInfo(handle, &curInfo);          //è®¾ç½®å…‰æ ‡ä¿¡æ¯
 }
 
 void CursorJump(int x, int y)
 {
-    COORD pos;                                       //¶¨Òå¹â±êÎ»ÖÃµÄ½á¹¹Ìå±äÁ¿
-    pos.X = x;                                       //ºá×ø±ê
-    pos.Y = y;                                       //×İ×ø±ê
-    HANDLE handle = GetStdHandle(STD_OUTPUT_HANDLE); //»ñÈ¡¿ØÖÆÌ¨¾ä±ú
-    SetConsoleCursorPosition(handle, pos);           //ÉèÖÃ¹â±êÎ»ÖÃ
+    COORD pos;                                       //å®šä¹‰å…‰æ ‡ä½ç½®çš„ç»“æ„ä½“å˜é‡
+    pos.X = x;                                       //æ¨ªåæ ‡
+    pos.Y = y;                                       //çºµåæ ‡
+    HANDLE handle = GetStdHandle(STD_OUTPUT_HANDLE); //è·å–æ§åˆ¶å°å¥æŸ„
+    SetConsoleCursorPosition(handle, pos);           //è®¾ç½®å…‰æ ‡ä½ç½®
 }
 
 void color(int c)
-{
-    SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), c); //ÑÕÉ«ÉèÖÃ
-                                                                 //×¢£ºSetConsoleTextAttributeÊÇÒ»¸öAPI£¨Ó¦ÓÃ³ÌĞò±à³Ì½Ó¿Ú£©
-}
